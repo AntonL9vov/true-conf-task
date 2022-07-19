@@ -1,45 +1,55 @@
 <template>
-  <div class="elevator-shaft">
-    <div class="elevator" moving="false" id="1">
-        <div class="table">
-          <div class="up arrow"><img width="20" height="20" src="@/assets/down-arrow.svg" alt=""></div>
-          <div class="down arrow" :style="'display: ' +  display()"><img width="20" height="20" src="@/assets/down-arrow.svg" alt=""></div>
-          <div class="floor">{{floor}}</div>
-        </div>
+  <div class="elevator-wrapper" :style="{height: shaftHeight}" :id="'el-' + elevatorNumber">
+    <div class="elevator" moving="false" :id="floor">
+      <div class="table">
+        <div class="up arrow"><img width="20" height="20" src="@/assets/down-arrow.svg" alt=""></div>
+        <div class="down arrow"><img width="20" height="20" src="@/assets/down-arrow.svg" alt=""></div>
+        <div class="floor">{{ floor }}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
+
 export default {
-  props:{
-    floor: Number
+  props: {
+    floor: Number,
+    initialFloor: Number,
+    shaftHeight: String,
+    elevatorNumber: Number
   },
   name: "ElevatorItem",
   methods: {
-    up(){
+    up() {
       $(".elevator").css({
         bottom: "150px"
       })
     },
     display() {
-      console.log($('.up').css('display'));
       return $('.up').css('display');
     }
+  },
+  mounted() {
+    let height = (this.initialFloor-1) * 200 + 'px';
+    $('.elevator').css({
+        bottom: height
+    })
   }
 }
 </script>
 
 <style scoped>
-.table{
+.table {
   display: none;
   align-items: center;
   margin-top: 10px;
   width: 150px;
   justify-content: center;
 }
-.elevator{
+
+.elevator {
   transition-timing-function: linear;
   position: absolute;
   height: 200px;
@@ -47,21 +57,24 @@ export default {
   border: 4px solid black;
   bottom: 0;
 }
-.elevator-shaft{
+
+.elevator-wrapper {
   position: relative;
-  height: 1000px;
   width: 160px;
   border: 2px solid black;
 }
-.arrow{
+
+.arrow {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.up{
+
+.up {
   transform: rotate(180deg);
 }
-.down{
-  display: none;
+
+.down {
+
 }
 </style>
